@@ -17,7 +17,7 @@ public class Queue<T> {
     }
     public boolean IsEmpty(){
         //If Queue is empty
-        if (first.equals(null))
+        if (first == null)
             return true;
         return false;
     }
@@ -28,12 +28,12 @@ public class Queue<T> {
     }
 
     public void Push(T Value){
+        Node<T> NextNode = new Node<T>(Value);
         if(IsEmpty()){
-            first.Value = Value;
+            first = NextNode;
             last = first;
         }
         else {
-            Node<T> NextNode = new Node<T>(Value);
             last.setNext( NextNode );
             last = last.getNext();
     }

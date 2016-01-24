@@ -2,7 +2,13 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!--When green button is pressed than change it's color to greenpressed-->
-    <item android:state_pressed="true" android:drawable="@drawable/greenpressed" />
+    <item android:state_pressed="true">
+    <shape android:shape="rectangle"  >
+        <corners android:radius="100sp" />
+        <stroke android:width="1sp" android:color="#000000" />
+        <gradient android:angle="-90" android:startColor="#ffffff" android:endColor="#80ff80"  />
+    </shape>
+</item>
 
     <item android:state_focused="true">
         <shape android:shape="rectangle"  >

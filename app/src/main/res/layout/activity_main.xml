@@ -1,4 +1,10 @@
-<LinearLayout
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:background="#20f5f8">
+    <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -12,18 +18,21 @@
             android:gravity="center"
             android:layout_marginBottom="20sp">
             <Button android:onClick="Green"
+                android:clickable="false"
                 android:id="@+id/GreenBtn"
             android:layout_width="150sp"
             android:layout_height="match_parent"
             android:background="@drawable/shapegreen"
-                android:layout_marginRight="20sp" />
+                android:layout_marginRight="20sp"
+                android:layout_marginEnd="20sp"/>
             <Button android:onClick="Red"
+                android:clickable="false"
                 android:id="@+id/RednBtn"
                 android:layout_width="150sp"
                 android:layout_height="match_parent"
                 android:background="@drawable/red"/>
         </LinearLayout>
-    <TextView
+    <TextView android:id="@+id/Level"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -35,12 +44,15 @@
             android:orientation="horizontal"
             android:gravity="center">
             <Button android:onClick="Yellow"
+                android:clickable="false"
                 android:id="@+id/YellowBtn"
                 android:layout_width="150sp"
                 android:layout_height="match_parent"
                 android:background="@drawable/shapeyellow"
+                android:layout_marginEnd="20sp"
                 android:layout_marginRight="20sp"/>
             <Button android:onClick="Blue"
+                android:clickable="false"
                 android:id="@+id/BlueBtn"
                 android:layout_width="150sp"
                 android:layout_height="match_parent"
@@ -48,24 +60,62 @@
         </LinearLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <ImageView android:onClick="Play"
+                <ImageView
+                    android:onClick="Play"
+                    android:id="@+id/play"
                     android:clickable="true"
                     android:layout_width="90sp"
                     android:layout_height="90sp"
                     android:scaleType="fitXY"
                     android:src="@drawable/play"/>
-
                 <ImageView android:onClick="Stop"
+                    android:id="@+id/Stop"
                     android:clickable="true"
                     android:layout_width="90sp"
                     android:layout_height="90sp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/stop"/>
-            </LinearLayout>
+                    android:src="@drawable/stop"
+                    android:visibility="gone"/>
+            </RelativeLayout>
     </LinearLayout>
+        <LinearLayout android:id="@+id/ScoreWindow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/scorewindow"
+            android:padding="10sp"
+            android:gravity="center"
+            android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:gravity="center"/>
+        <EditText
+            android:id="@+id/Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10sp"
+                android:gravity="center">
+                <Button android:onClick="Next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    />
+                <Button android:onClick="Back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Back"/>
+                </LinearLayout>
+        </LinearLayout>
+</RelativeLayout>

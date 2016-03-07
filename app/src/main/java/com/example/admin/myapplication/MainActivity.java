@@ -2,12 +2,15 @@ package com.example.admin.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,13 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import com.example.admin.myapplication.Nodes.Queue;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 
 
@@ -53,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout Score;
     EditText Name;
     Intent I;
-
+    LinearLayout Lay;
+    Drawable[] PState;
+    Handler H;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,13 @@ public class MainActivity extends AppCompatActivity {
         NewButt = new Random();
         Btn = new Button[4];
         Btn[0] =(Button)findViewById(R.id.GreenBtn);
+        Btn[0].setClickable(false);
         Btn[1] =(Button)findViewById(R.id.BlueBtn);
+        Btn[1].setClickable(false);
         Btn[2] =(Button)findViewById(R.id.YellowBtn);
+        Btn[2].setClickable(false);
         Btn[3] =(Button)findViewById(R.id.RednBtn);
+        Btn[3].setClickable(false);
         Sounds = new MediaPlayer[4];
         Sounds[0] = MediaPlayer.create(this,R.raw.a);
         Sounds[1] = MediaPlayer.create(this,R.raw.b);
@@ -78,41 +83,61 @@ public class MainActivity extends AppCompatActivity {
         Score = (LinearLayout)findViewById(R.id.ScoreWindow);
         Name = (EditText)findViewById(R.id.Name);
         I = new Intent(this,HighScore.class);
+        Lay = (LinearLayout)findViewById(R.id.Layout);
+        PState = new Drawable[4];
+        PState[0] = getDrawable(R.drawable.greenpressed);
+        PState[1] = getDrawable(R.drawable.bluepressed);
+        PState[2] = getDrawable(R.drawable.yellowpressed);
+        PState[3] = getDrawable(R.drawable.redpressed);
+        H = new Handler();
+
     }
 
     public void Green(View v) {
-        PressAnim(0);
         PlayerTurn(0);
+        PlaySound(0);
     }
 
     public void Blue(View v) {
-        PressAnim(1);
         PlayerTurn(1);
+        PlaySound(1);
     }
 
     public void Yellow(View v) {
-        PressAnim(2);
         PlayerTurn(2);
+        PlaySound(2);
     }
 
     public void Red(View v) {
-        PressAnim(3);
         PlayerTurn(3);
+        PlaySound(3);
+    }
+    void PlaySound(final int ButtonId){
+        H.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Sounds[ButtonId].start();
+            }
+        }, 200);
     }
 
     //Cycles through a button's click animation
-   public void PressAnim( final int ButtonId){
-               Btn[ButtonId].setPressed(true);
-               Sounds[ButtonId].start();
-               try {
-                   //Try pausing button for .1 seconds
-                   Thread.sleep(1000);
-               } catch (InterruptedException e) {
-                   //If problem occurs than print stack trace
-                   e.printStackTrace();
+   public void PressAnim(final Integer ButtonId,final Queue temp){
+       Btn[ButtonId].setPressed(true);
+       PlaySound(ButtonId);
+       H.postDelayed(new Runnable() {
+           @Override
+           public void run() {
+               Btn[ButtonId].setPressed(false);
+               if(!temp.isEmpty()) {
+                   PressAnim((int)temp.remove(), temp);
                }
-               Btn[ButtonId].invalidate();
            }
+       }, 2000);
+       /*if(!temp.isEmpty()) {
+           PressAnim((int) temp.remove(), temp);
+       }*/
+   }
 
     //Function to show the player which buttons to press
     public void Animate(){
@@ -121,25 +146,19 @@ public class MainActivity extends AppCompatActivity {
         Temp = new LinkedList(Order);  // saves Order queue into Temp Queue
         //Goes to show the player which buttons to press
         String lev = "" + Order.size();
-        Level.setText(lev);
-        while (!Temp.isEmpty())
-            PressAnim(Temp.remove());
-        if(Order.isEmpty())
-        {
-            Score.setVisibility(View.VISIBLE);
-        }
-        Temp = new LinkedList(Order);
+        Level.setText(lev);//Shows player Level (Player level is the same as "Order" queue's size).
+        PressAnim(Order.peek(),new LinkedList(Order));
     }
     public void PlayerTurn(int ButtonNumber){
            if (Temp.peek() == ButtonNumber) {
                Temp.remove();
-            } else {
-                Score.setVisibility(View.VISIBLE);
+           } else {
+               Score.setVisibility(View.VISIBLE);
 
-            }
+           }
         if (Temp.isEmpty()){
-            Animate();
-        }
+                    Animate();
+    }
     }
 
     public void Play(View v) {
@@ -164,11 +183,6 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
     public void Back(View v){
-        if (Build.VERSION.SDK_INT >= 11)
             super.recreate();
-        else{
-            startActivity(getIntent());
-            finish();
-        }
     }
     }

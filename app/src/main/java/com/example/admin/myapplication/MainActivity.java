@@ -5,20 +5,15 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -42,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     //2 = Yellow
     //3 = Red
     Button[] Btn;
-    MediaPlayer[] Sounds;
-    Activity mActivity;
+    MediaPlayer[] ButSounds;
+    //Activity mActivity;
     //Represents the play button
     ImageView Playbut;
     ImageView Stopbut;
@@ -51,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
     TextView Level;
     LinearLayout Score;
     EditText Name;
-    Intent I;
-    LinearLayout Lay;
+    Intent MoveToHighScore;
+    LinearLayout GameOverScreenLayout;
     Drawable[] PState;
     Handler H;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +66,20 @@ public class MainActivity extends AppCompatActivity {
         Btn[2].setClickable(false);
         Btn[3] =(Button)findViewById(R.id.RednBtn);
         Btn[3].setClickable(false);
-        Sounds = new MediaPlayer[4];
-        Sounds[0] = MediaPlayer.create(this,R.raw.a);
-        Sounds[1] = MediaPlayer.create(this,R.raw.b);
-        Sounds[2] = MediaPlayer.create(this,R.raw.c);
-        Sounds[3] = MediaPlayer.create(this,R.raw.d);
-        mActivity = this;
+        ButSounds = new MediaPlayer[4];
+        ButSounds[0] = MediaPlayer.create(this,R.raw.a);
+        ButSounds[1] = MediaPlayer.create(this,R.raw.b);
+        ButSounds[2] = MediaPlayer.create(this,R.raw.c);
+        ButSounds[3] = MediaPlayer.create(this,R.raw.d);
+       //mActivity = this;
         Playbut =(ImageView)findViewById(R.id.play);
         Stopbut =(ImageView)findViewById(R.id.Stop);
         Stopbut.setClickable(false);
         Level = (TextView)findViewById(R.id.Level);
         Score = (LinearLayout)findViewById(R.id.ScoreWindow);
         Name = (EditText)findViewById(R.id.Name);
-        I = new Intent(this,HighScore.class);
-        Lay = (LinearLayout)findViewById(R.id.Layout);
+        MoveToHighScore = new Intent(this,HighScoreShow.class);
+        GameOverScreenLayout = (LinearLayout)findViewById(R.id.Layout);
         PState = new Drawable[4];
         PState[0] = getDrawable(R.drawable.greenpressed);
         PState[1] = getDrawable(R.drawable.bluepressed);
@@ -116,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         H.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Sounds[ButtonId].start();
+                ButSounds[ButtonId].start();
             }
         }, 200);
     }
@@ -172,14 +168,14 @@ public class MainActivity extends AppCompatActivity {
         Playbut.setVisibility(View.INVISIBLE);
         }
     public void Stop(View v){
-        Level.setText("Start");
         v.setClickable(false);
         this.Playbut.setClickable(true);
         Score.setVisibility(View.VISIBLE);
     }
     public void Next(View v){
-        //Intent I = new Intent(this,HighScore.class);
-        startActivity(I);
+        MoveToHighScore.putExtra("Name", this.Name.getText().toString());
+        MoveToHighScore.putExtra("Score",Order.size());
+        startActivity(MoveToHighScore);
         this.finish();
     }
     public void Back(View v){

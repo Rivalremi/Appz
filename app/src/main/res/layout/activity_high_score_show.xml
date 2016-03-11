@@ -22,6 +22,24 @@
         android:id="@+id/HighScore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></ListView>
+        android:layout_weight="1"></ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button android:onClick="backToMenu"
+            android:layout_gravity="center"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:text="Main Menu"
+            android:background="@drawable/shapeblue" />
+        <Button android:onClick="backToGame"
+            android:layout_gravity="center"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:text="Play"
+            android:background="@drawable/shapegreen" />
+    </LinearLayout>
 
 </LinearLayout>

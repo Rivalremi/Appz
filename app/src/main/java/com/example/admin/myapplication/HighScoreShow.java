@@ -1,9 +1,11 @@
 package com.example.admin.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -19,6 +21,9 @@ public class HighScoreShow extends AppCompatActivity {
     SharedPreferences.Editor ScoreEdit;
     Bundle Extras;
 
+    Intent toMenu;
+    Intent toGame;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,8 @@ public class HighScoreShow extends AppCompatActivity {
             int y = Extras.getInt("Score");
             AddScore(Extras.getString("Name"),Extras.getInt("Score"));
         }
+        toGame = new Intent(this, MainActivity.class);
+        toMenu = new Intent(this, MainMenu.class);
     }
 
     public String getScores(){
@@ -75,5 +82,15 @@ public class HighScoreShow extends AppCompatActivity {
     protected void onDestroy(){
         AddScore(Extras.getString("Name") , Extras.getInt("Score"));
         super.onDestroy();
+    }
+
+    public void backToMenu(View v){
+        startActivity(toMenu);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out_right);
+        finish();
+    }
+    public void backToGame(View v){
+        startActivity(toGame);
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
     }
 }

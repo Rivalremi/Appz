@@ -10,14 +10,18 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".HighScoreShow"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".MainMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".HighScoreShow"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".AboutPage"></activity>
     </application>
 
 </manifest>

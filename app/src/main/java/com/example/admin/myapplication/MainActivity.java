@@ -1,10 +1,7 @@
 package com.example.admin.myapplication;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
     ImageView Stopbut;
     //Represents level
     TextView Level;
-    LinearLayout Score;
-    EditText Name;
+
+    LinearLayout gameOverScreen;
+    EditText Name;//Represents user's name after game over
     Intent MoveToHighScore;
-    LinearLayout GameOverScreenLayout;
-    Drawable[] PState;
-    Handler H;
+
+    Handler H;//Handler thread to create a delay
 
 
     @Override
@@ -76,15 +73,9 @@ public class MainActivity extends AppCompatActivity {
         Stopbut =(ImageView)findViewById(R.id.Stop);
         Stopbut.setClickable(false);
         Level = (TextView)findViewById(R.id.Level);
-        Score = (LinearLayout)findViewById(R.id.ScoreWindow);
+        gameOverScreen = (LinearLayout)findViewById(R.id.ScoreWindow);
         Name = (EditText)findViewById(R.id.Name);
         MoveToHighScore = new Intent(this,HighScoreShow.class);
-        GameOverScreenLayout = (LinearLayout)findViewById(R.id.Layout);
-        PState = new Drawable[4];
-        PState[0] = getDrawable(R.drawable.greenpressed);
-        PState[1] = getDrawable(R.drawable.bluepressed);
-        PState[2] = getDrawable(R.drawable.yellowpressed);
-        PState[3] = getDrawable(R.drawable.redpressed);
         H = new Handler();
 
     }
@@ -108,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         PlayerTurn(3);
         PlaySound(3);
     }
+    //Plays pressed button's sound
     void PlaySound(final int ButtonId){
         H.postDelayed(new Runnable() {
             @Override
@@ -145,39 +137,52 @@ public class MainActivity extends AppCompatActivity {
         Level.setText(lev);//Shows player Level (Player level is the same as "Order" queue's size).
         PressAnim(Order.peek(),new LinkedList(Order));
     }
+
     public void PlayerTurn(int ButtonNumber){
+        //If button pressed by the player is the correct button
            if (Temp.peek() == ButtonNumber) {
                Temp.remove();
            } else {
-               Score.setVisibility(View.VISIBLE);
+               gameOverScreen.setVisibility(View.VISIBLE);
 
            }
+        //If player was able to get the series correct
         if (Temp.isEmpty()){
                     Animate();
     }
     }
 
+    //Whenever play button is pressed
     public void Play(View v) {
         Order = new LinkedList<>();
         Animate();
+
         v.setClickable(false);
         Stopbut.setClickable(true);
+        //Set all play buttons as clickable
         for (int i=0;i<4;i++)
             Btn[i].setClickable(true);
         Stopbut.setVisibility(View.VISIBLE);
         Playbut.setVisibility(View.INVISIBLE);
         }
+
+    //Whenever game is stopped
     public void Stop(View v){
         v.setClickable(false);
         this.Playbut.setClickable(true);
-        Score.setVisibility(View.VISIBLE);
+        gameOverScreen.setVisibility(View.VISIBLE);
     }
+
+    //Both Next and Back are only visible in the game over screen
+
+    //Move to Score window
     public void Next(View v){
         MoveToHighScore.putExtra("Name", this.Name.getText().toString());
         MoveToHighScore.putExtra("Score",Order.size());
         startActivity(MoveToHighScore);
         this.finish();
     }
+    //Go back to game
     public void Back(View v){
             super.recreate();
     }

@@ -29,15 +29,18 @@ public class HighScoreShow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score_show);
+
         ScoreDatabase = getSharedPreferences("MyScores", Context.MODE_PRIVATE);
         ScoreEdit = ScoreDatabase.edit();
+
         ScoreList = (ListView) findViewById(R.id.HighScore);
+
+        //Gets bundle from main activity
         Extras = getIntent().getExtras();
         if (Extras != null){
-            String x = Extras.getString("Name");
-            int y = Extras.getInt("Score");
             AddScore(Extras.getString("Name"),Extras.getInt("Score"));
         }
+
         toGame = new Intent(this, MainActivity.class);
         toMenu = new Intent(this, MainMenu.class);
     }
@@ -47,25 +50,36 @@ public class HighScoreShow extends AppCompatActivity {
         return ScoreDatabase.getString("Scores","");
     }
     public void AddScore(String Name, int Score) {
+        //Gets list of scores from sharedpreference database
         String Scores = getScores();
         if (Score >0) {
             if (Scores.length() >= 1) {
                 //If Scores isn't empty
+
                 List<ScoreOrganizer> scoreStrings = new ArrayList<>();
+                //Splits scores
+                //Scores are automatically set with a | after every score
                 String[] TempScores = Scores.split("\\|");
+                //for every score split in the TempScores list
                 for (String eSc : TempScores) {
+                    //Split the names of the players from the numbers
                     String[] parts = eSc.split(" - ");
+                    //Add them into the scoreStrings list
                     scoreStrings.add(new ScoreOrganizer(parts[0], Integer.parseInt(parts[1])));
+                    //Make a new object of the new player's score
                     ScoreOrganizer newScore = new ScoreOrganizer(Name, Score);
+                    //add that new score to the scoreStrings list
                     scoreStrings.add(newScore);
+                    //Sort the data in the sortStrings list (Descending)
                     Collections.sort(scoreStrings);
+
                     StringBuilder scoreBuild = new StringBuilder("");
                     for (int s = 0; s < scoreStrings.size(); s++) {
                         if (s >= 10) break;//only want ten
-                        if (s > 0) scoreBuild.append("|");//pipe separate the score strings
+                        if (s > 0) scoreBuild.append("|");// | separates the score strings
                         scoreBuild.append(scoreStrings.get(s).getScore());
                     }
-                    //write to prefs
+                    //write to sharedPreference
                     ScoreEdit.putString("Scores", scoreBuild.toString());
                 }
             } else {
@@ -73,6 +87,7 @@ public class HighScoreShow extends AppCompatActivity {
                 ScoreEdit.putString("Scores", "" + Name + " - " + Score);
             }
             ScoreEdit.commit();
+            //get data from sharedPreference and show it in the list
             String ScoreToList = ScoreDatabase.getString("Scores", "");
             String[] s = ScoreToList.split("\\|");
             this.adapter = new ArrayAdapter<>(this, R.layout.list_item, s);
@@ -80,6 +95,7 @@ public class HighScoreShow extends AppCompatActivity {
         }
     }
     protected void onDestroy(){
+        //Makes sure everything is in check and no data is lost
         AddScore(Extras.getString("Name") , Extras.getInt("Score"));
         super.onDestroy();
     }

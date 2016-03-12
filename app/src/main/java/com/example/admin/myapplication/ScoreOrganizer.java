@@ -1,12 +1,9 @@
 package com.example.admin.myapplication;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.renderscript.ScriptIntrinsic;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by I'm always dancing on 11/03/2016.
+ * Used to display a person's score
  */
 public class ScoreOrganizer implements Comparable<ScoreOrganizer>{
 

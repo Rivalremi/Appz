@@ -10,23 +10,27 @@
     tools:context="com.example.admin.myapplication.MainMenu"
     android:background="#20f5f8"
     android:orientation="vertical">
-    <TextView
+
+    <TextView android:id="@+id/Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="60sp"
         android:text="Simon"
         android:gravity="center"/>
+
     <LinearLayout
         android:paddingTop="150sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button android:onClick="PlayGame"
             android:layout_gravity="center"
             android:layout_width="150sp"
             android:layout_height="150sp"
             android:text="Play"
             android:background="@drawable/shapegreen" />
+
         <Button android:onClick="About"
             android:layout_width="150sp"
             android:layout_height="150sp"

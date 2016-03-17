@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout gameOverScreen;
     EditText Name;//Represents user's name after game over
     Intent MoveToHighScore;
-
     Handler H;//Handler thread to create a delay
+    int AnimationPause;
 
 
     @Override
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         Name = (EditText)findViewById(R.id.Name);
         MoveToHighScore = new Intent(this,HighScoreShow.class);
         H = new Handler();
+        AnimationPause = 2000;
 
     }
 
@@ -109,23 +110,36 @@ public class MainActivity extends AppCompatActivity {
         }, 200);
     }
 
-    //Cycles through a button's click animation
-   public void PressAnim(final Integer ButtonId,final Queue temp){
-       Btn[ButtonId].setPressed(true);
-       PlaySound(ButtonId);
-       H.postDelayed(new Runnable() {
-           @Override
-           public void run() {
-               Btn[ButtonId].setPressed(false);
-               if(!temp.isEmpty()) {
-                   PressAnim((int)temp.remove(), temp);
-               }
+
+
+    public void PlayerTurn(int ButtonNumber){
+        //If button pressed by the player is the correct button
+           if (Temp.peek() == ButtonNumber) {
+               Temp.remove();
+           } else {
+               gameOverScreen.setVisibility(View.VISIBLE);
+               for (int i=0;i<4;i++)
+                   Btn[i].setClickable(false);
            }
-       }, 2000);
-       /*if(!temp.isEmpty()) {
-           PressAnim((int) temp.remove(), temp);
-       }*/
-   }
+        //If player was able to get the series correct
+        if (Temp.isEmpty())
+                Animate();
+
+    }
+
+    //Whenever play button is pressed
+    public void Play(View v) {
+        Order = new LinkedList<>();
+        Animate();
+        v.setClickable(false);
+        Stopbut.setClickable(true);
+        //Set all play buttons as clickable
+        for (int i=0;i<4;i++)
+            Btn[i].setClickable(true);
+        Stopbut.setVisibility(View.VISIBLE);
+        Playbut.setVisibility(View.INVISIBLE);
+        }
+
 
     //Function to show the player which buttons to press
     public void Animate(){
@@ -135,36 +149,36 @@ public class MainActivity extends AppCompatActivity {
         //Goes to show the player which buttons to press
         String lev = "" + Order.size();
         Level.setText(lev);//Shows player Level (Player level is the same as "Order" queue's size).
-        PressAnim(Order.peek(),new LinkedList(Order));
-    }
-
-    public void PlayerTurn(int ButtonNumber){
-        //If button pressed by the player is the correct button
-           if (Temp.peek() == ButtonNumber) {
-               Temp.remove();
-           } else {
-               gameOverScreen.setVisibility(View.VISIBLE);
-
-           }
-        //If player was able to get the series correct
-        if (Temp.isEmpty()){
-                    Animate();
-    }
-    }
-
-    //Whenever play button is pressed
-    public void Play(View v) {
-        Order = new LinkedList<>();
-        Animate();
-
-        v.setClickable(false);
-        Stopbut.setClickable(true);
-        //Set all play buttons as clickable
-        for (int i=0;i<4;i++)
-            Btn[i].setClickable(true);
-        Stopbut.setVisibility(View.VISIBLE);
-        Playbut.setVisibility(View.INVISIBLE);
+        if (AnimationPause > 700) {
+            AnimationPause -= 150;
         }
+        if (Order.size() > 1) {
+            H.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    PressAnim(Order.peek(), new LinkedList(Order));
+                }
+            },1000);
+        }
+        else { PressAnim(Order.peek(), new LinkedList(Order));}
+    }
+
+    //Cycles through a button's click animation
+    public void PressAnim(final Integer ButtonId,final Queue temp) {
+        if (temp.size() == Order.size())
+            temp.remove();
+
+            Btn[ButtonId].setPressed(true);
+            PlaySound(ButtonId);
+            H.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Btn[ButtonId].setPressed(false);
+                    if (!temp.isEmpty())
+                    PressAnim((int)temp.remove(), temp);
+                }
+            }, AnimationPause);
+    }
 
     //Whenever game is stopped
     public void Stop(View v){

@@ -35,10 +35,15 @@ public class HighScoreShow extends AppCompatActivity {
 
         ScoreList = (ListView) findViewById(R.id.HighScore);
 
-        //Gets bundle from main activity
-        Extras = getIntent().getExtras();
-        if (Extras != null){
+
+        if (getIntent().getExtras() != null){
+            //Gets bundle from main activity
+            Extras = getIntent().getExtras();
             AddScore(Extras.getString("Name"),Extras.getInt("Score"));
+        }
+        else
+        {
+            PostScores();
         }
 
         toGame = new Intent(this, MainActivity.class);
@@ -97,26 +102,32 @@ public class HighScoreShow extends AppCompatActivity {
                 ScoreEdit.putString("Scores", "" + Name + " - " + Score);
             }
             ScoreEdit.commit();
-            //get data from sharedPreference and show it in the list
-            String ScoreToList = ScoreDatabase.getString("Scores", "");
-            String[] s = ScoreToList.split("\\|");
-            this.adapter = new ArrayAdapter<>(this, R.layout.list_item, s);
-            ScoreList.setAdapter(adapter);
+            PostScores();
         }
     }
     protected void onDestroy(){
-        //Makes sure everything is in check and no data is lost
-        AddScore(Extras.getString("Name") , Extras.getInt("Score"));
+        if (getIntent().getExtras() != null) {
+            //Makes sure everything is in check and no data is lost
+            AddScore(Extras.getString("Name"), Extras.getInt("Score"));
+        }
         super.onDestroy();
     }
 
     public void backToMenu(View v){
         startActivity(toMenu);
-        overridePendingTransition(R.anim.slide_in,R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out_right);
         finish();
     }
     public void backToGame(View v){
         startActivity(toGame);
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    public void PostScores(){
+        //get data from sharedPreference and show it in the list
+        String ScoreToList = ScoreDatabase.getString("Scores", "");
+        String[] s = ScoreToList.split("\\|");
+        this.adapter = new ArrayAdapter<>(this, R.layout.list_item, s);
+        ScoreList.setAdapter(adapter);
     }
 }

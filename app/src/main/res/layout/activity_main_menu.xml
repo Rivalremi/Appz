@@ -19,26 +19,45 @@
         android:gravity="center"/>
 
     <LinearLayout
-        android:paddingTop="150sp"
+        android:paddingTop="100sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom|center">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
         <Button android:onClick="PlayGame"
             android:layout_gravity="center"
-            android:layout_width="150sp"
-            android:layout_height="150sp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:text="Play"
             android:background="@drawable/shapegreen" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+            <Button android:onClick="HighScore"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:background="@drawable/red"
+                android:text="Score"/>
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
         <Button android:onClick="About"
-            android:layout_width="150sp"
-            android:layout_height="150sp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:background="@drawable/shapeyellow"
-            android:text="About"
-            android:layout_marginLeft="50sp"/>
-
-
+            android:text="About" />
+        </RelativeLayout>
 </LinearLayout>
-
 </LinearLayout>

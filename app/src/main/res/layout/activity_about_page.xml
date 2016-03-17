@@ -35,13 +35,18 @@
         android:textSize="20sp"
         android:textColor="#000000"
         android:text="Good luck and remember to have fun :)"/>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|bottom"
+        android:layout_weight="1">
     <Button android:onClick="backToMenu"
         android:layout_gravity="left"
-        android:layout_width="150sp"
-        android:layout_height="150sp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         android:text="Play"
         android:layout_marginTop="50sp"
         android:background="@drawable/shapeblue" />
+    </RelativeLayout>
 
 </LinearLayout>

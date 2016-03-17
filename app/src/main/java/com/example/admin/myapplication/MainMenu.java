@@ -1,12 +1,9 @@
 package com.example.admin.myapplication;
 
-import android.animation.FloatEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.view.View;
 import android.widget.TextView;
 

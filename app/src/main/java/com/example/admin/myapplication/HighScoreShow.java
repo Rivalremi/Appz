@@ -67,21 +67,31 @@ public class HighScoreShow extends AppCompatActivity {
                     //Add them into the scoreStrings list
                     scoreStrings.add(new ScoreOrganizer(parts[0], Integer.parseInt(parts[1])));
                     //Make a new object of the new player's score
-                    ScoreOrganizer newScore = new ScoreOrganizer(Name, Score);
+                    //ScoreOrganizer newScore = new ScoreOrganizer(Name, Score);
                     //add that new score to the scoreStrings list
-                    scoreStrings.add(newScore);
+                   // scoreStrings.add(newScore);
                     //Sort the data in the sortStrings list (Descending)
                     Collections.sort(scoreStrings);
-
-                    StringBuilder scoreBuild = new StringBuilder("");
-                    for (int s = 0; s < scoreStrings.size(); s++) {
-                        if (s >= 10) break;//only want ten
-                        if (s > 0) scoreBuild.append("|");// | separates the score strings
-                        scoreBuild.append(scoreStrings.get(s).getScore());
-                    }
-                    //write to sharedPreference
-                    ScoreEdit.putString("Scores", scoreBuild.toString());
+                    //ScoreEdit.putString("Scores", scoreBuild.toString());
                 }
+
+                //Make a new object of the new player's score
+                ScoreOrganizer newScore = new ScoreOrganizer(Name, Score);
+                //add that new score to the scoreStrings list
+                scoreStrings.add(newScore);
+                //Sort the data in the sortStrings list (Descending)
+                Collections.sort(scoreStrings);
+
+
+                StringBuilder scoreBuild = new StringBuilder("");
+                for (int s = 0; s < scoreStrings.size(); s++) {
+                    if (s >= 10) break;//only want ten
+                    if (s > 0) scoreBuild.append("|");// | separates the score strings
+                    scoreBuild.append(scoreStrings.get(s).getScore());
+                }
+
+                ScoreEdit.putString("Scores", scoreBuild.toString());
+
             } else {
                 //If Scores is empty
                 ScoreEdit.putString("Scores", "" + Name + " - " + Score);
